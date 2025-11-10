@@ -20,7 +20,7 @@ It is built with a modern Python stack and is fully containerized with Docker, a
 
 The project uses a layered architecture to separate concerns:
 
-\`\`\`
+```
 ├── alembic/ # Database migration scripts
 ├── logs/ # Persistent log files
 ├── nginx/ # Nginx directory
@@ -34,7 +34,7 @@ The project uses a layered architecture to separate concerns:
 ├── docker-compose.yml # Main Docker orchestration file
 ├── Dockerfile # Docker build file for the app/worker
 └── requirements.txt # Python dependencies
-\`\`\`
+```
 
 
 ## 🚀 Getting Started
