@@ -1,11 +1,5 @@
 # Molecules API 🧪
 
-[![Build Status](https://img.shields.io/your_ci_badge_url)](https://github.com/your-username/your-repo-name/actions)
-[![Coverage](https://img.shields.io/codecov/c/github/your-username/your-repo-name)](https://codecov.io/gh/your-username/your-repo-name)
-[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-
 This is a high-performance, asynchronous API for storing, managing, and searching chemical molecules.
 
 It is built with a modern Python stack and is fully containerized with Docker, allowing for easy setup and development. The API supports standard CRUD operations and a powerful, asynchronous substructure search using RDKit and Celery.
@@ -13,6 +7,7 @@ It is built with a modern Python stack and is fully containerized with Docker, a
 ## ✨ Features
 
 * 🚀 **High-Speed API:** Built with **FastAPI** for a high-performance, modern RESTful API with automatic OpenAPI (Swagger) documentation.
+* ⚖️ **Load Balancing:** Includes an **Nginx** container as a reverse proxy and load balancer.
 * 🐘 **Async Database:** Fully asynchronous communication with **PostgreSQL** using **SQLAlchemy 2.0** and `asyncpg`.
 * 🔬 **Powerful Cheminformatics:** **RDKit** for all core chemical logic, including substructure searching and molecule validation.
 * ⏳ **Asynchronous Tasks:** Heavy search operations are offloaded to **Celery** workers, keeping the API responsive.
@@ -25,19 +20,21 @@ It is built with a modern Python stack and is fully containerized with Docker, a
 
 The project uses a layered architecture to separate concerns:
 
+\`\`\`
 ├── alembic/ # Database migration scripts
 ├── logs/ # Persistent log files
 ├── nginx/ # Nginx directory
 ├── src/ # All Python source code
-│ ├── core/ # Core app logic: config, db, redis, celery
-│ ├── molecules/ # Feature module: routers, services, models, tasks
-│ └── main.py # Main FastAPI app entrypoint
+│   ├── core/ # Core app logic: config, db, redis, celery
+│   ├── molecules/ # Feature module: routers, services, models, tasks
+│   └── main.py # Main FastAPI app entrypoint
 ├── tests/ # Unit tests
 ├── alembic.ini # Alembic configuration
 ├── .env # Environment variables
 ├── docker-compose.yml # Main Docker orchestration file
 ├── Dockerfile # Docker build file for the app/worker
 └── requirements.txt # Python dependencies
+\`\`\`
 
 
 ## 🚀 Getting Started
