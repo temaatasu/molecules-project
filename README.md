@@ -50,12 +50,13 @@ cd your-repo-name
 # Create the .env file from the example
 cp .env.example .env
 The default values in .env are already set up to work with the docker-compose.yml file.
+```
 
-2. Generate Initial Database Migration
+### 2. Generate Initial Database Migration
 
 This is a crucial one-time step. We must create the first migration script before the app runs.
 
-Bash
+```bash
 # 1. Start only the database service in the background
 docker-compose up -d postgres_db
 
@@ -65,34 +66,38 @@ docker-compose up -d postgres_db
 # This inspects your models and creates the initial migration script.
 docker-compose run --rm app alembic revision --autogenerate -m "Initial molecules table"
 You will see a new file appear in the alembic/versions/ directory.
+```
 
-3. Launch the Full Application
+### 3. Launch the Full Application
 
 Now you can build the images and run all services (API, Celery worker, Redis, and Postgres) at once.
 
-Bash
+```bash
 docker-compose up --build
+```
 The API container's startup command is configured to automatically run alembic upgrade head, applying the migration you just created.
 
 You should see logs from all services. Once the app logs show "Application startup complete", the API is live.
 
-📚 API Documentation
+
+## 📚 API Documentation
 Once the application is running, you can access the interactive API documentation (powered by Swagger UI and ReDoc) at:
 
 Swagger UI: http://localhost:8000/docs
 
 ReDoc: http://localhost:8000/redoc
 
-🧪 Running Tests
+## 🧪 Running Tests
 The tests/ directory contains unit and integration tests. To run the test suite, execute pytest inside a new app container:
 
-Bash
+```bash
 # This command starts a new container, runs pytest, and then removes it
 docker-compose run --rm app pytest
-🔄 Database Migrations (After Setup)
+```
+## 🔄 Database Migrations (After Setup)
 Any time you change the SQLAlchemy models (e.g., in src/molecules/models.py), you must create a new migration.
 
-Bash
+```bash
 # 1. Ensure the database is running
 docker-compose up -d postgres_db
 
@@ -105,3 +110,4 @@ docker-compose run --rm app alembic upgrade head
 
 # Alternatively, just restart the app to apply
 docker-compose up --build
+```
