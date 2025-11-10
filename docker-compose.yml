@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d moleculedb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis_cache:
+    image: redis:7-alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app1:
+    build: .
+    container_name: fastapi_app_1
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      redis_cache:
+        condition: service_healthy
+    env_file:
+      - ./.env
+    environment:
+      - SERVER_ID=SERVER-1
+    volumes:
+      - ./src:/app/src
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini
+      - ./logs:/app/log
+
+  app2:
+    build: .
+    container_name: fastapi_app_2
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      redis_cache:
+        condition: service_healthy
+    env_file:
+      - ./.env
+    environment:
+      - SERVER_ID=SERVER-2
+    volumes:
+      - ./src:/app/src
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini
+      - ./logs:/app/log
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_load_balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app1
+      - app2
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    command: celery -A src.core.celery_app worker --loglevel=info
+    depends_on:
+      app1:
+        condition: service_started
+      app2:
+        condition: service_started
+      redis_cache:
+        condition: service_healthy
+      postgres_db:
+        condition: service_healthy
+    env_file:
+      - ./.env
+    volumes:
+      - ./src:/app/src
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini
+      - ./logs:/app/log
+
+volumes:
+  postgres_data:
