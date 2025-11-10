@@ -79,7 +79,7 @@ You will see a new file appear in the alembic/versions/ directory.
 
 ### 3. Launch the Full Application
 
-Now you can build the images and run all services (API, Celery worker, Redis, and Postgres) at once.
+Now you can build the images and run all services (Nginx, FastAPI, Celery worker, Redis, and Postgres) at once.
 
 ```bash
 docker-compose up --build
@@ -92,9 +92,9 @@ You should see logs from all services. Once the app logs show "Application start
 ## 📚 API Documentation
 Once the application is running, you can access the interactive API documentation (powered by Swagger UI and ReDoc) at:
 
-Swagger UI: http://localhost:8000/docs
+Swagger UI: http://localhost:80/docs
 
-ReDoc: http://localhost:8000/redoc
+ReDoc: http://localhost:80/redoc
 
 ## 🧪 Running Tests
 The tests/ directory contains unit and integration tests. To run the test suite, execute pytest inside a new app container:
