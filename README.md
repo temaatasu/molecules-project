@@ -25,7 +25,19 @@ It is built with a modern Python stack and is fully containerized with Docker, a
 
 The project uses a layered architecture to separate concerns:
 
-. ├── alembic/ # Database migration scripts ├── logs/ # Persistent log files ├── src/ # All Python source code │ ├── core/ # Core app logic: config, db, redis, celery │ ├── molecules/ # Feature module: routers, services, models, tasks │ └── main.py # Main FastAPI app entrypoint ├── tests/ # Unit and integration tests ├── alembic.ini # Alembic configuration ├── .env.example # Example environment variables ├── docker-compose.yml # Main Docker orchestration file ├── Dockerfile # Docker build file for the app/worker └── requirements.txt # Python dependencies
+├── alembic/ # Database migration scripts
+├── logs/ # Persistent log files
+├── nginx/ # Nginx directory
+├── src/ # All Python source code
+│ ├── core/ # Core app logic: config, db, redis, celery
+│ ├── molecules/ # Feature module: routers, services, models, tasks
+│ └── main.py # Main FastAPI app entrypoint
+├── tests/ # Unit tests
+├── alembic.ini # Alembic configuration
+├── .env # Environment variables
+├── docker-compose.yml # Main Docker orchestration file
+├── Dockerfile # Docker build file for the app/worker
+└── requirements.txt # Python dependencies
 
 
 ## 🚀 Getting Started
